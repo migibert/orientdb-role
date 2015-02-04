@@ -149,7 +149,12 @@
     <storages>
     </storages>
     <users>
+        <user resources="connect,server.listDatabases,server.dblist" password="guest" name="guest"/>
+        {% for user in orientdb_users %}
+        <user resources="*" password="{{user.password}}" name="{{user.name}}"/>
+        {% endfor %}
     </users>
+
     <properties>
         <!-- DATABASE POOL: size min/max -->
         <entry name="db.pool.min" value="1"/>
