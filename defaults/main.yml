@@ -5,3 +5,10 @@ orientdb_user_password: $6$Ls2PCtO6PLby08$Hkh36Sn2V112FSexIHM25dHpnU2P1TflCQbj./
 orientdb_dir: /opt
 orientdb_path: '{{orientdb_dir}}/orientdb-community-{{orientdb_version}}'
 orientdb_log_dir: /var/log/orientdb
+orientdb_bind_ip: 0.0.0.0
+orientdb_enable_binary: True
+orientdb_binary_port_range: 2424-2430
+orientdb_enable_ssl: False
+orientdb_ssl_port_range: 2434-2440
+orientdb_enable_http: True
+orientdb_http_port_range: 2480-2490
