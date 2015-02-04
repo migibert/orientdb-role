@@ -3,8 +3,10 @@ OrientDB
 
 [![Galaxy](http://img.shields.io/badge/ansible--galaxy-orientdb-blue.svg)](https://galaxy.ansible.com/list#/roles/2790)
 
-This role challenges orientdb management automation.
+This role challenges orientdb management automation. 
 For now, it handles installation from website tarballs.
+With default values, you can access OrientDB Studio on http://localhost:2480 with credentials root / root
+
 
 Requirements
 ------------
@@ -28,6 +30,7 @@ orientdb_enable_ssl: Enables ssl communication with server. Default value is Fal
 orientdb_ssl_port_range: Port range associated to ssl communication. Default value is 2434-2440
 orientdb_enable_http: Enables http communication with server. Default value is True
 orientdb_http_port_range: Port range associated to http communication. Default value is 2480-2490
+orientdb_users: Database users that can access all resources. Default value is { name: root, password: root }
 ```
 
 Dependencies
@@ -38,10 +41,36 @@ This role has no dependencies as it consider a JVM is already present on the tar
 Example Playbook
 -------------------------
 
+With all default values
 ```
 - hosts: servers
   roles:
   - { role: migibert.orientdb }
+```
+
+With all default values override
+```
+- hosts: all
+
+  vars:
+    orientdb_version: 2.0.1
+    orientdb_user: orientdb
+    orientdb_user_password: $6$Ls2PCtO6PLby08$Hkh36Sn2V112FSexIHM25dHpnU2P1TflCQbj./e6kf3Pd.25s41uZu9dkeZSU7Ixy4fq.U8PSd6/FzjmSz3An/
+    orientdb_dir: /opt    
+    orientdb_log_dir: /var/log/orientdb
+    orientdb_bind_ip: 0.0.0.0
+    orientdb_enable_binary: True
+    orientdb_binary_port_range: 2424-2430
+    orientdb_enable_ssl: False
+    orientdb_ssl_port_range: 2434-2440
+    orientdb_enable_http: True
+    orientdb_http_port_range: 2480-2490
+    orientdb_users:
+    - { name: admin, password: admin }
+    - { name: root, password: root }
+
+  roles:
+  - { role: orientdb-role }
 ```
 
 License
