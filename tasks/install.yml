@@ -20,3 +20,8 @@
   template: 
     src=orientdb-server-config.xml.j2 
     dest={{orientdb_path}}/config/orientdb-server-config.xml 
+
+- name: Configure orientdb logger
+  template:
+    src=orientdb-server-log.properties.j2
+    dest={{orientdb_path}}/config/orientdb-server-log.properties
