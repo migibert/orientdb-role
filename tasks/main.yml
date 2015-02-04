@@ -1,2 +1,2 @@
 ---
-# tasks file for orientdb-role/
+- include: install.yml
