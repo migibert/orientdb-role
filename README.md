@@ -1,6 +1,8 @@
 OrientDB
 ========
 
+[![Galaxy](http://img.shields.io/badge/ansible--galaxy-orientdb-blue.svg)](https://galaxy.ansible.com/list#/roles/2790)
+
 This role challenges orientdb management automation.
 
 Requirements
