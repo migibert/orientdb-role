@@ -1,9 +1,22 @@
 - name: Download OrientDB tarball
   get_url: 
-    url='http://www.orientechnologies.com/download.php?email=unknown@unknown.com&file=orientdb-community-{{orientdb_version}}.tar.gz&os=linux' 
-    dest='/tmp/orientdb-{{orientdb_version}}.tar.gz'
+    url=http://www.orientechnologies.com/download.php?email=unknown@unknown.com&file=orientdb-community-{{orientdb_version}}.tar.gz&os=linux
+    dest=/tmp/orientdb-{{orientdb_version}}.tar.gz
 
 - name: Unarchive OrientDB tarball
   unarchive:
-    src='/tmp/orientdb-{{orientdb_version}}.tar.gz'
-    dest=/opt
+    src=/tmp/orientdb-{{orientdb_version}}.tar.gz
+    dest={{orientdb_dir}}
+
+- name: Make orientdb_user owns directory #Issue 234 with unarchive owner attribute
+  file: path={{orientdb_path}} owner={{orientdb_user}} group={{orientdb_user}} state=directory recurse=yes
+
+- name: Configure orientdb launch script
+  template:
+    src=orientdb-server.sh.j2
+    dest={{orientdb_path}}/bin/orientdb.sh
+
+- name: Configure orientdb server 
+  template: 
+    src=orientdb-server-config.xml.j2 
+    dest={{orientdb_path}}/config/orientdb-server-config.xml 

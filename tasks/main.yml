@@ -1,2 +1,8 @@
 ---
+- name: Create orientdb user
+  user: name={{orientdb_user}} password={{orientdb_user_password}}
+
+- name: Create log directory
+  file: path={{orientdb_log_dir}} state=directory owner={{orientdb_user}} group={{orientdb_user}}
+
 - include: install.yml
