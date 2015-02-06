@@ -1,0 +1,9 @@
+dependencies:
+  post:
+    - pip install ansible    
+
+test:
+  pre:
+    - mv example.yml ..
+  override:    
+    - cd .. && ansible-playbook --syntax-check example.yml
