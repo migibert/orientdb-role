@@ -1,6 +1,6 @@
 dependencies:
   post:
-    - pip install ansible    
+    - sudo pip install ansible    
 
 test:
   pre:
