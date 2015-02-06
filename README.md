@@ -73,7 +73,8 @@ With all default values override and no tuning options
   - { role: orientdb-role }
 ```
 
-With total customization
+With total customization. You do not need to set all these variables, those you do not define keep their default values.
+If you need a lot of variables definitions, I highly suggest you to define them outside the playbook.
 ```
 - hosts: all
 
