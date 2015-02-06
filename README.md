@@ -3,6 +3,7 @@ OrientDB
 
 [![Galaxy](http://img.shields.io/badge/ansible--galaxy-orientdb-blue.svg)](https://galaxy.ansible.com/list#/roles/2790)
 [![Circle CI](https://circleci.com/gh/migibert/orientdb-role/tree/master.svg?style=shield)](https://circleci.com/gh/migibert/orientdb-role)
+[![License](http://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org)  
 
 This role challenges orientdb management automation. 
 For now, it handles installation from website tarballs.
