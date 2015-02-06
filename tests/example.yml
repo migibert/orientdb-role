@@ -157,4 +157,4 @@
       value: true
 
   roles:
-  - role: orientdb-role
+  - role: migibert.orientdb

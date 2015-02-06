@@ -1,9 +1,18 @@
+general:
+  build_dir: tests
+
 dependencies:
   post:
-    - sudo pip install ansible    
+    - sudo pip install ansible
+
+machine:
+  environment:
+    PLAYBOOK: example.yml
 
 test:
   pre:
-    - mv example.yml ..
+    - sudo ln -s orientdb-role ../../migibert.orientdb        
   override:    
-    - cd .. && ansible-playbook --syntax-check example.yml
+    - ansible-playbook --syntax-check -i inventory $PLAYBOOK
+    - ansible-playbook --list-tasks -i inventory $PLAYBOOK
+    - sudo ansible-playbook --connection=local -i inventory $PLAYBOOK
