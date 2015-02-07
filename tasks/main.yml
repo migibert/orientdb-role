@@ -6,3 +6,5 @@
   file: path={{orientdb_log_dir}} state=directory owner={{orientdb_user}} group={{orientdb_user}}
 
 - include: install.yml
+
+- include: configure.yml
