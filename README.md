@@ -34,6 +34,7 @@ orientdb_ssl_port_range: Port range associated to ssl communication. Default val
 orientdb_enable_http: Enables http communication with server. Default value is True
 orientdb_http_port_range: Port range associated to http communication. Default value is 2480-2490
 orientdb_users: Database users that can access all resources. Default value is { name: root, password: root }
+orientdb_force_install: If it is set to True, the installation will be forced even if orientdb is already installed in the specified directory
 ```
 
 Dependencies
