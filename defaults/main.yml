@@ -12,6 +12,7 @@ orientdb_enable_ssl: False
 orientdb_ssl_port_range: 2434-2440
 orientdb_enable_http: True
 orientdb_http_port_range: 2480-2490
+orientdb_force_install: False
 orientdb_users:
 - name: root
   password: root
