@@ -16,6 +16,7 @@ test:
     - ansible-playbook --syntax-check -i inventory $PLAYBOOK
     - ansible-playbook --list-tasks -i inventory $PLAYBOOK
     - sudo ansible-playbook --connection=local -i inventory $PLAYBOOK
+    - sudo ansible-playbook --connection=local -i inventory $PLAYBOOK | grep -q 'changed=0.*failed=0'
     - sudo ps aux | grep -v grep | grep orientdb
     - sudo netstat -ntlp | grep 2480
     - sudo netstat -ntlp | grep 2424
