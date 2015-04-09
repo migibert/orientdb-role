@@ -17,6 +17,7 @@
 
 - name: Unarchive OrientDB tarball
   unarchive:
+    copy: no
     src: "/tmp/orientdb-{{orientdb_version}}.tar.gz"
     dest: "{{orientdb_dir}}"
   when: >
