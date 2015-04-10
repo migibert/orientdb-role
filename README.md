@@ -242,6 +242,19 @@ If you need a lot of variables definitions, I highly suggest you to define them 
   - role: migibert.orientdb
 ```
 
+Running in distribtued mode. Set `orientdb_enable_distributed` to `true` to enable distributed mode. Under `orientdb_distributed` you can either enable multicast or use tcp for discovery. If using tcp then you need to specify at least one node in `tcp_members`.
+
+```
+orientdb_enable_distributed: true
+
+orientdb_distributed:
+  multicast: False
+  tcp_enabled: False
+  tcp_members:
+  - 192.168.22.5-10:2434
+  - 192.168.18.22:2434
+```
+
 License
 -------
 
