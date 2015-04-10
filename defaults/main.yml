@@ -17,6 +17,13 @@ orientdb_users:
 - name: root
   password: root
 
+orientdb_enable_distributed: false
+
+orientdb_distributed:
+  multicast: False
+  tcp_enabled: False
+  tcp_members: []
+
 # Database tuning
 orientdb_tuning_properties:
 - name: blueprints.graph.txMode
