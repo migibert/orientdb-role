@@ -1,4 +1,6 @@
 ---
+orientdb_autoback_delay: 4h
+orientdb_autoback: false
 orientdb_version: 2.0.1
 orientdb_user: orientdb
 orientdb_user_password: $6$Ls2PCtO6PLby08$Hkh36Sn2V112FSexIHM25dHpnU2P1TflCQbj./e6kf3Pd.25s41uZu9dkeZSU7Ixy4fq.U8PSd6/FzjmSz3An/
