@@ -2,17 +2,17 @@
 <hazelcast xsi:schemaLocation="http://www.hazelcast.com/schema/config hazelcast-config-3.0.xsd"
            xmlns="http://www.hazelcast.com/schema/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <group>
-    <name>orientdb</name>
-    <password>orientdb</password>
+    <name>{{ orientdb_distributed.hazelcast_group }}</name>
+    <password>{{ orientdb_distributed.hazelcast_password }}</password>
   </group>
   <network>
     <port auto-increment="true">2434</port>
     <join>
-      <multicast enabled="{{ orientdb_distributed.multicast }}">
-        <multicast-group>235.1.1.1</multicast-group>
-        <multicast-port>2434</multicast-port>
+      <multicast enabled="{% if orientdb_distributed.multicast_enabled %}true{% else %}false{% endif %}">
+        <multicast-group>{{ orientdb_distributed.multicast_group }}</multicast-group>
+        <multicast-port>{{ orientdb_distributed.multicast_port }}</multicast-port>
       </multicast>
-      <tcp-ip enabled="{{ orientdb_distributed.tcp_enabled }}">
+      <tcp-ip enabled="{% if orientdb_distributed.tcp_enabled %}true{% else %}false{% endif %}">
       {% for member in orientdb_distributed.tcp_members %}
         <member>{{ member }}</member>
       {% endfor %}
