@@ -260,6 +260,30 @@ orientdb_distributed:
   - 192.168.18.22:2434
 ```
 
+Testing distributed mode
+-------
+
+Under test/vagrant, you will find the following files:
+- Vagrantfile which creates two machines without any provisioning
+- inventory with those two machines ips
+- provision-multicast.yml which installs orientdb in distributed mode with a multicast discovery setting
+- provision-tcp.yml which installs orientdb in distributed mode with a known peers discovery setting
+
+You can play with the following commands:
+```
+vagrant up
+```
+```
+ansible-playbook -i inventory provision-multicast.yml
+```
+```
+ansible-playbook -i inventory provision-tcp.yml
+```
+
+Notes:
+- the two discovery modes multicast and tcp are not compatible so choose one at time ;)
+- tests are manual at the moment but will be automated as soon as possible
+
 License
 -------
 
