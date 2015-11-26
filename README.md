@@ -19,8 +19,12 @@ Distributed mode relies on Hazelcast which needs Java 8.
 
 Role Variables
 --------------
+Take a look at default variables to have an idea of a complete configuration.
 
 ```
+orientdb_autoback_delay: Delay time for auto backups. Default is 4h.
+orientdb_autoback: Enables auto backup. Default is False.
+orientdb_autoback_start: Start time for auto backup. Default is 23:00:00.
 orientdb_version: OrientDB server version. Default value is 2.0.1.
 orientdb_user: System user, OrientDB directories owner. Default value is orientdb.
 orientdb_user_password: Hashed value of orientdb_user password. Default value is hashed 'orientdb' : $6$Ls2PCtO6PLby08$Hkh36Sn2V112FSexIHM25dHpnU2P1TflCQbj./e6kf3Pd.25s41uZu9dkeZSU7Ixy4fq.U8PSd6/FzjmSz3An/
@@ -58,6 +62,9 @@ With all default values override and no tuning options
 - hosts: all
 
   vars:
+    orientdb_autoback_delay: 4h.
+    orientdb_autoback: False
+    orientdb_autoback_start: 23:00:00
     orientdb_version: 2.0.1
     orientdb_user: orientdb
     orientdb_user_password: $6$Ls2PCtO6PLby08$Hkh36Sn2V112FSexIHM25dHpnU2P1TflCQbj./e6kf3Pd.25s41uZu9dkeZSU7Ixy4fq.U8PSd6/FzjmSz3An/
@@ -243,7 +250,10 @@ If you need a lot of variables definitions, I highly suggest you to define them 
   - role: migibert.orientdb
 ```
 
-Running in distributed mode. Set `orientdb_enable_distributed` to `true` to enable distributed mode. Under `orientdb_distributed` you can either enable multicast or use tcp for discovery. If using tcp then you need to specify at least one node in `tcp_members`.
+Running in distributed mode
+-------
+
+Set `orientdb_enable_distributed` to `true` to enable distributed mode. Under `orientdb_distributed` you can either enable multicast or use tcp for discovery. If using tcp then you need to specify at least one node in `tcp_members`.
 
 ```
 orientdb_enable_distributed: true
@@ -265,7 +275,7 @@ Testing distributed mode
 
 Under test/vagrant, you will find the following files:
 - Vagrantfile which creates two machines without any provisioning
-- inventory with those two machines ips
+- inventory with those two machines ips and convenient variables for simplifying tests
 - provision-multicast.yml which installs orientdb in distributed mode with a multicast discovery setting
 - provision-tcp.yml which installs orientdb in distributed mode with a known peers discovery setting
 
@@ -276,6 +286,7 @@ vagrant up
 ```
 ansible-playbook -i inventory provision-multicast.yml
 ```
+or
 ```
 ansible-playbook -i inventory provision-tcp.yml
 ```
