@@ -15,6 +15,7 @@ Requirements
 ------------
 
 OrientDB is written in Java and needs a JVM for running. This role does not cover this installation and consider as a prerequisite a JVM presence and a defined $JAVA_HOME environment variable.
+Distributed mode relies on Hazelcast which needs Java 8.
 
 Role Variables
 --------------

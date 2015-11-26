@@ -22,6 +22,7 @@ orientdb_users:
 orientdb_enable_distributed: false
 
 orientdb_distributed:
+  hazelcast_network_port: 2434
   hazelcast_group: orientdb
   hazelcast_password: orientdb
   multicast_enabled: False
