@@ -16,6 +16,18 @@
   - apt:
       name: openjdk-8-jdk
       state: present
+  - apt:
+      name: jq
+      state: present
   roles:
   - role: orientdb-role
-  
+
+- hosts: orientdb-servers
+  sudo: yes
+  tasks:
+  - shell: /opt/orientdb-community-2.0.5/bin/console.sh CONNECT remote:127.0.0.1/GratefulDeadConcerts admin admin | grep -A 50 "DISTRIBUTED CONFIGURATION" | grep -v "DISTRIBUTED CONFIGURATION" | jq '.members | length'
+    changed_when: False
+    register: cluster_size
+  - fail:
+      msg: "Cluster must have exactly two members"
+    when: cluster_size.stdout | int != 2
