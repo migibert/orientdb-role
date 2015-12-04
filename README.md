@@ -95,7 +95,7 @@ If you need a lot of variables definitions, I highly suggest you to define them 
     orientdb_user: orientdb
     orientdb_user_password: $6$Ls2PCtO6PLby08$Hkh36Sn2V112FSexIHM25dHpnU2P1TflCQbj./e6kf3Pd.25s41uZu9dkeZSU7Ixy4fq.U8PSd6/FzjmSz3An/
     orientdb_dir: /opt
-    orientdb_path: '{{    orientdb_dir}}/orientdb-community-{{    orientdb_version}}'
+    orientdb_path: '{{orientdb_dir}}/orientdb-community-{{orientdb_version}}'
     orientdb_log_d  : /var/log/orientdb
     orientdb_bind_ip: 0.0.0.0
     orientdb_enable_binary: True
@@ -281,14 +281,11 @@ Under test/vagrant, you will find the following files:
 
 You can play with the following commands:
 ```
-vagrant up
-```
-```
-ansible-playbook -i inventory provision-multicast.yml
+vagrant up && ansible-playbook -i inventory provision-multicast.yml
 ```
 or
 ```
-ansible-playbook -i inventory provision-tcp.yml
+vagrant up && ansible-playbook -i inventory provision-tcp.yml
 ```
 
 Notes:
