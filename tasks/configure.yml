@@ -13,6 +13,11 @@
     src=orientdb-server-log.properties.j2
     dest={{orientdb_path}}/config/orientdb-server-log.properties
 
+- name: Configure hazelcast
+  template:
+    src=hazelcast.xml.j2
+    dest={{orientdb_path}}/config/hazelcast.xml
+
 - stat: 
     path: /etc/init.d/orientdb
   register: service_orientdb_stat

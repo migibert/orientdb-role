@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hazelcast xsi:schemaLocation="http://www.hazelcast.com/schema/config hazelcast-config-3.0.xsd"
+           xmlns="http://www.hazelcast.com/schema/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <group>
+    <name>{{ orientdb_distributed.hazelcast_group }}</name>
+    <password>{{ orientdb_distributed.hazelcast_password }}</password>
+  </group>
+  <network>
+    <port auto-increment="true">{{ orientdb_distributed.hazelcast_network_port }}</port>
+    <join>
+      <multicast enabled="{% if orientdb_distributed.multicast_enabled %}true{% else %}false{% endif %}">
+        <multicast-group>{{ orientdb_distributed.multicast_group }}</multicast-group>
+        <multicast-port>{{ orientdb_distributed.multicast_port }}</multicast-port>
+      </multicast>
+      <tcp-ip enabled="{% if orientdb_distributed.tcp_enabled %}true{% else %}false{% endif %}">
+      {% for member in orientdb_distributed.tcp_members %}
+        <member>{{ member }}</member>
+      {% endfor %}
+      </tcp-ip>
+    </join>
+  </network>
+  <executor-service>
+    <pool-size>16</pool-size>
+  </executor-service>
+</hazelcast>

@@ -15,11 +15,16 @@ Requirements
 ------------
 
 OrientDB is written in Java and needs a JVM for running. This role does not cover this installation and consider as a prerequisite a JVM presence and a defined $JAVA_HOME environment variable.
+Distributed mode relies on Hazelcast which needs Java 8.
 
 Role Variables
 --------------
+Take a look at default variables to have an idea of a complete configuration.
 
 ```
+orientdb_autoback_delay: Delay time for auto backups. Default is 4h.
+orientdb_autoback: Enables auto backup. Default is False.
+orientdb_autoback_start: Start time for auto backup. Default is 23:00:00.
 orientdb_version: OrientDB server version. Default value is 2.0.1.
 orientdb_user: System user, OrientDB directories owner. Default value is orientdb.
 orientdb_user_password: Hashed value of orientdb_user password. Default value is hashed 'orientdb' : $6$Ls2PCtO6PLby08$Hkh36Sn2V112FSexIHM25dHpnU2P1TflCQbj./e6kf3Pd.25s41uZu9dkeZSU7Ixy4fq.U8PSd6/FzjmSz3An/
@@ -57,6 +62,9 @@ With all default values override and no tuning options
 - hosts: all
 
   vars:
+    orientdb_autoback_delay: 4h.
+    orientdb_autoback: False
+    orientdb_autoback_start: 23:00:00
     orientdb_version: 2.0.1
     orientdb_user: orientdb
     orientdb_user_password: $6$Ls2PCtO6PLby08$Hkh36Sn2V112FSexIHM25dHpnU2P1TflCQbj./e6kf3Pd.25s41uZu9dkeZSU7Ixy4fq.U8PSd6/FzjmSz3An/
@@ -241,6 +249,51 @@ If you need a lot of variables definitions, I highly suggest you to define them 
   roles:
   - role: migibert.orientdb
 ```
+
+Running in distributed mode
+-------
+
+Set `orientdb_enable_distributed` to `true` to enable distributed mode. Under `orientdb_distributed` you can either enable multicast or use tcp for discovery. If using tcp then you need to specify at least one node in `tcp_members`.
+
+```
+orientdb_enable_distributed: true
+
+orientdb_distributed:
+  hazelcast_group: orientdb
+  hazelcast_password: orientdb
+  multicast_enabled: False
+  multicast_group: 235.1.1.1
+  multicast_port: 2434
+  tcp_enabled: False
+  tcp_members: []
+  - 192.168.22.5-10:2434
+  - 192.168.18.22:2434
+```
+
+Testing distributed mode
+-------
+
+Under test/vagrant, you will find the following files:
+- Vagrantfile which creates two machines without any provisioning
+- inventory with those two machines ips and convenient variables for simplifying tests
+- provision-multicast.yml which installs orientdb in distributed mode with a multicast discovery setting
+- provision-tcp.yml which installs orientdb in distributed mode with a known peers discovery setting
+
+You can play with the following commands:
+```
+vagrant up
+```
+```
+ansible-playbook -i inventory provision-multicast.yml
+```
+or
+```
+ansible-playbook -i inventory provision-tcp.yml
+```
+
+Notes:
+- the two discovery modes multicast and tcp are not compatible so choose one at time ;)
+- tests are manual at the moment but will be automated as soon as possible
 
 License
 -------

@@ -1,0 +1,24 @@
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|  
+  config.vm.box = "ubuntu/vivid64"
+
+  config.vm.define "server1" do |server|
+    server.vm.network "private_network", ip: "192.168.20.5"
+    server.vm.provider :virtualbox do |vb|
+      vb.name = "orientdb-server-1"
+      vb.customize ["modifyvm", :id, "--cpus", "1"]
+      vb.customize ["modifyvm", :id, "--memory", "1024"]
+    end 
+  end
+
+  config.vm.define "server2" do |server|
+    server.vm.network "private_network", ip: "192.168.20.6"
+    server.vm.provider :virtualbox do |vb|
+      vb.name = "orientdb-server-2"
+      vb.customize ["modifyvm", :id, "--cpus", "1"]
+      vb.customize ["modifyvm", :id, "--memory", "1024"]
+    end
+  end
+
+end

@@ -1,4 +1,7 @@
 ---
+orientdb_autoback_delay: 4h
+orientdb_autoback: False
+orientdb_autoback_start: 23:00:00
 orientdb_version: 2.0.1
 orientdb_user: orientdb
 orientdb_user_password: $6$Ls2PCtO6PLby08$Hkh36Sn2V112FSexIHM25dHpnU2P1TflCQbj./e6kf3Pd.25s41uZu9dkeZSU7Ixy4fq.U8PSd6/FzjmSz3An/
@@ -16,6 +19,18 @@ orientdb_force_install: False
 orientdb_users:
 - name: root
   password: root
+
+orientdb_enable_distributed: false
+
+orientdb_distributed:
+  hazelcast_network_port: 2434
+  hazelcast_group: orientdb
+  hazelcast_password: orientdb
+  multicast_enabled: False
+  multicast_group: 235.1.1.1
+  multicast_port: 2434
+  tcp_enabled: False
+  tcp_members: []
 
 # Database tuning
 orientdb_tuning_properties:
