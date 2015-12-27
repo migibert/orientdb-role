@@ -9,7 +9,7 @@ This role challenges orientdb management automation.
 For now, it handles installation from website tarballs.
 With default values, you can access OrientDB Studio on http://localhost:2480 with credentials root / root
 
-Install it with `ansible-galaxy migibert.orientdb`
+Install it with `ansible-galaxy install migibert.orientdb`
 
 Requirements
 ------------
