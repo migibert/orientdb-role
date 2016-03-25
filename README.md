@@ -279,6 +279,12 @@ Under test/vagrant, you will find the following files:
 - provision-multicast.yml which installs orientdb in distributed mode with a multicast discovery setting
 - provision-tcp.yml which installs orientdb in distributed mode with a known peers discovery setting
 
+Kitchen tests
+-------
+- Requirements: VirtualBox, Ruby and Bundler (gem install bundle)
+- Run ```bundle install``` this will install all test dependencies from Gemfile
+- To test: ```bundle exec kitchen test```
+
 You can play with the following commands:
 ```
 vagrant up && ansible-playbook -i inventory provision-multicast.yml
