@@ -1,0 +1,18 @@
+- name: Install orientdb as a service
+  template:
+    src=orientdb.service.j2
+    dest=/usr/lib/systemd/system/orientdb.service
+    owner=root
+    group=root
+    mode=400
+  register: orientdb_service_unit
+
+- name: systemctl daemon-reload
+  command: systemctl daemon-reload
+  when: orientdb_service_unit|changed
+
+- name: Launch orientdb service
+  service:
+    name=orientdb
+    state=started
+    enabled=yes

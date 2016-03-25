@@ -1,5 +1,5 @@
 - name: Download OrientDB tarball
-  get_url: 
+  get_url:
     url: "http://www.orientechnologies.com/download.php?email=unknown@unknown.com&file=orientdb-community-{{orientdb_version}}.tar.gz&os=linux"
     dest: "/tmp/orientdb-{{orientdb_version}}.tar.gz"
 
@@ -21,13 +21,13 @@
     src: "/tmp/orientdb-{{orientdb_version}}.tar.gz"
     dest: "{{orientdb_dir}}"
   when: >
-    orientdb_force_install == True or 
-    stat_orientdb_dir.stat.exists == False or 
-    stat_orientdb_bin_path.stat.exists == False or 
+    orientdb_force_install == True or
+    stat_orientdb_dir.stat.exists == False or
+    stat_orientdb_bin_path.stat.exists == False or
     stat_orientdb_config_path.stat.exists == False
 
 - name: Make orientdb_user owns directory #Issue 234 with unarchive owner attribute
-  file: 
+  file:
     path: "{{orientdb_path}}"
     owner: "{{orientdb_user}}"
     group: "{{orientdb_user}}"
@@ -39,12 +39,17 @@
     src: orientdb-server.sh.j2
     dest: "{{orientdb_path}}/bin/orientdb.sh"
 
-- name: Configure orientdb server 
-  template: 
-    src: orientdb-server-config.xml.j2 
+- name: Configure orientdb server
+  template:
+    src: orientdb-server-config.xml.j2
     dest: "{{orientdb_path}}/config/orientdb-server-config.xml"
 
 - name: Configure orientdb logger
   template:
     src: orientdb-server-log.properties.j2
     dest: "{{orientdb_path}}/config/orientdb-server-log.properties"
+
+- name: Configure hazelcast
+  template:
+    src=hazelcast.xml.j2
+    dest={{orientdb_path}}/config/hazelcast.xml
