@@ -32,6 +32,23 @@ orientdb_distributed:
   tcp_enabled: False
   tcp_members: []
 
+orientdb_distributed_db_config:
+  autoDeploy: true
+  hotAlignment: false
+  executionMode: "undefined"
+  readQuorum: 1
+  writeQuorum: 2
+  failureAvailableNodesLessQuorum: false
+  readYourWrites: true
+  servers:
+    "*": "master"
+  clusters:
+    index: {}
+    internal: {}
+    "*":
+      servers:
+        - "<NEW_NODE>"
+
 # Database tuning
 orientdb_tuning_properties:
 - name: blueprints.graph.txMode
