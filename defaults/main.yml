@@ -17,8 +17,11 @@ orientdb_enable_http: True
 orientdb_http_port_range: 2480-2490
 orientdb_force_install: False
 orientdb_users:
-- name: root
-  password: root
+  - name: root
+    password: root
+  - name: guest
+    password: guest
+    resources: 'connect,server.listDatabases,server.dblist'
 
 orientdb_enable_distributed: false
 
