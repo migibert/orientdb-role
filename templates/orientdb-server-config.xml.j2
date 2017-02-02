@@ -147,9 +147,8 @@
   <storages>
   </storages>
   <users>
-    <user resources="connect,server.listDatabases,server.dblist" password="guest" name="guest"/>
     {% for user in orientdb_users -%}
-    <user resources="*" password="{{user.password}}" name="{{user.name}}"/>
+    <user resources="{{ user.resources | default("*") }}" password="{{user.password}}" name="{{user.name}}"/>
     {% endfor -%}
   </users>
 
