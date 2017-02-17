@@ -18,6 +18,15 @@
       multicast_port: 2434
       tcp_enabled: False
       tcp_members: []
+    orientdb_users:
+      - name: root
+        password: root
+      - name: test
+        password: test
+        resources: 'connect,server.listDatabases,server.dblist'
+      - name: bad
+        password: bad
+        resources: 'server.dblist'
   tasks:
   - apt:
       name: openjdk-8-jdk
@@ -29,14 +38,38 @@
   - role: orientdb-role
 
 - hosts: orientdb-servers
-  become: yes
   tasks:
-  - shell: /opt/orientdb-community-2.0.5/bin/console.sh CONNECT remote:127.0.0.1/GratefulDeadConcerts admin admin | grep -A 50 "DISTRIBUTED CONFIGURATION" | grep -v "DISTRIBUTED CONFIGURATION" | jq '.members | length'
+  - name: test cluster size
+    become: yes
+    shell: /opt/orientdb-community-2.0.5/bin/console.sh CONNECT remote:127.0.0.1/GratefulDeadConcerts admin admin | grep -A 50 "DISTRIBUTED CONFIGURATION" | grep -v "DISTRIBUTED CONFIGURATION" | jq '.members | length'
     changed_when: False
-    register: cluster_size
     retries: 10
     delay: 2
-    until: cluster_size.stdout | int == 2 
-  - fail:
+    until: cluster_size.stdout | int == 2
+    register: cluster_size
+  - name: test cluster size
+    fail:
       msg: "Cluster must have exactly two members"
     when: cluster_size.stdout | int != 2
+
+  - name: test guest connection
+    shell: /opt/orientdb-community-2.0.5/bin/console.sh CONNECT remote:127.0.0.1 test test
+    changed_when: False
+    retries: 10
+    delay: 2
+    until: guest_connection.rc == 0
+    register: guest_connection
+  - name: test guest connection
+    fail:
+      msg: "Connection with test user should not fail"
+    when: guest_connection.rc != 0
+
+  - name: test authorizations
+    shell: /opt/orientdb-community-2.0.5/bin/console.sh CONNECT remote:127.0.0.1/GratefulDeadConcerts bad bad
+    changed_when: False
+    failed_when: False
+    register: bad_connection
+  - name: test authorizations
+    fail:
+      msg: "Connection with bad user should fail"
+    when: bad_connection.rc != 1
