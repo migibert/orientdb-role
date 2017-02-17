@@ -1,14 +1,33 @@
 - stat:
     path: /etc/init.d/orientdb
   register: service_orientdb_stat
+  when: "{{ ansible_distribution_release|lower == 'trusty' }}"
 
-- name: Install orientdb as a service
-  command: 'cp {{orientdb_path}}/bin/orientdb.sh /etc/init.d/orientdb'
-  when: service_orientdb_stat.stat.exists == False or orientdb_force_install == True
+- name: Install orientdb as a sysvinit service
+  copy:
+    remote_src: True
+    src: "{{orientdb_path}}/bin/orientdb.sh"
+    dest: /etc/init.d/orientdb'
+  register: orientdb_service_unit
+  when: "{{ ansible_distribution_release|lower == 'trusty' }} and (service_orientdb_stat.stat.exists == False or orientdb_force_install == True)"
+
+- name: Install orientdb as a systemd service
+  template:
+    src: orientdb.service.j2
+    dest: /etc/systemd/system/orientdb.service
+    owner: root
+    group: root
+    mode: 400
+  register: orientdb_service_unit
+  when: "{{ ansible_distribution_release|lower == 'xenial' }} or orientdb_force_install == True"
+
+- name: systemctl daemon-reload
+  command: systemctl daemon-reload
+  when: "{{ ansible_distribution_release|lower == 'xenial' }} and orientdb_service_unit|changed"
 
 - name: Launch orientdb service
   service:
-    name=orientdb
-    state=started
-    enabled=yes
-  when: service_orientdb_stat.stat.exists == False or orientdb_force_install == True
+    name: orientdb
+    state: restarted
+    enabled: yes
+  when: orientdb_service_unit|changed or orientdb_force_install == True

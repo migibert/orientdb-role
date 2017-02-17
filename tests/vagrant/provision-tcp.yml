@@ -10,7 +10,7 @@
       multicast_enabled: False
       multicast_group: 235.1.1.1
       multicast_port: 2434
-      tcp_enabled: True 
+      tcp_enabled: True
       tcp_members:
       - 192.168.20.5:2434
       - 192.168.20.6:2434
@@ -29,8 +29,10 @@
   tasks:
   - shell: /opt/orientdb-community-2.1.6/bin/console.sh CONNECT remote:127.0.0.1/GratefulDeadConcerts admin admin | grep -A 50 "DISTRIBUTED CONFIGURATION" | grep -v "DISTRIBUTED CONFIGURATION" | jq '.members | length'
     changed_when: False
+    retries: 10
+    delay: 2
+    until: cluster_size.stdout | int == 2
     register: cluster_size
   - fail:
       msg: "Cluster must have exactly two members"
     when: cluster_size.stdout | int != 2
-  

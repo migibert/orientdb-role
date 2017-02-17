@@ -1,5 +1,11 @@
 - hosts: orientdb-servers
-  sudo: yes
+  become: yes
+  tasks:
+  - apt:
+      name: python-dev
+      state: present
+- hosts: orientdb-servers
+  become: yes
   vars:
     orientdb_version: 2.0.5
     orientdb_enable_distributed: true
@@ -10,7 +16,7 @@
       multicast_enabled: True
       multicast_group: 235.1.1.1
       multicast_port: 2434
-      tcp_enabled: False 
+      tcp_enabled: False
       tcp_members: []
   tasks:
   - apt:
@@ -23,11 +29,14 @@
   - role: orientdb-role
 
 - hosts: orientdb-servers
-  sudo: yes
+  become: yes
   tasks:
   - shell: /opt/orientdb-community-2.0.5/bin/console.sh CONNECT remote:127.0.0.1/GratefulDeadConcerts admin admin | grep -A 50 "DISTRIBUTED CONFIGURATION" | grep -v "DISTRIBUTED CONFIGURATION" | jq '.members | length'
     changed_when: False
     register: cluster_size
+    retries: 10
+    delay: 2
+    until: cluster_size.stdout | int == 2 
   - fail:
       msg: "Cluster must have exactly two members"
     when: cluster_size.stdout | int != 2
