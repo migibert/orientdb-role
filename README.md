@@ -5,7 +5,7 @@ OrientDB
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org)  
 [![Circle CI](https://circleci.com/gh/migibert/orientdb-role/tree/master.svg?style=shield)](https://circleci.com/gh/migibert/orientdb-role)
 
-This role challenges orientdb management automation. 
+This role challenges orientdb management automation.
 For now, it handles installation from website tarballs.
 With default values, you can access OrientDB Studio on http://localhost:2480 with credentials root / root
 
@@ -279,12 +279,6 @@ Under test/vagrant, you will find the following files:
 - provision-multicast.yml which installs orientdb in distributed mode with a multicast discovery setting
 - provision-tcp.yml which installs orientdb in distributed mode with a known peers discovery setting
 
-Kitchen tests
--------
-- Requirements: VirtualBox, Ruby and Bundler (gem install bundle)
-- Run ```bundle install``` this will install all test dependencies from Gemfile
-- To test: ```bundle exec kitchen test```
-
 You can play with the following commands:
 ```
 vagrant up && ansible-playbook -i inventory provision-multicast.yml
@@ -293,6 +287,12 @@ or
 ```
 vagrant up && ansible-playbook -i inventory provision-tcp.yml
 ```
+
+Kitchen tests
+-------
+- Requirements: VirtualBox, Ruby and Bundler (gem install bundle)
+- Run ```bundle install``` this will install all test dependencies from Gemfile
+- To test: ```bundle exec kitchen test```
 
 Notes:
 - the two discovery modes multicast and tcp are not compatible so choose one at time ;)
