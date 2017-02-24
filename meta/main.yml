@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   author: Mikael Gibert
-  description: OrientDB installation  
+  description: OrientDB installation
   license: MIT
   min_ansible_version: 1.6
   platforms:
@@ -9,9 +9,6 @@ galaxy_info:
       versions:
         - 7
     - name: Ubuntu
-      versions:
-      - all
-    - name: Debian
       versions:
       - all
   categories:
