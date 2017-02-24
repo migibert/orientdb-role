@@ -1,7 +1,7 @@
 OrientDB
 ========
 
-[![Galaxy](http://img.shields.io/badge/ansible--galaxy-orientdb-blue.svg)](https://galaxy.ansible.com/list#/roles/2790)
+[![Galaxy](http://img.shields.io/badge/ansible--galaxy-orientdb-blue.svg)](https://galaxy.ansible.com/migibert/orientdb)
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org)  
 [![Circle CI](https://circleci.com/gh/migibert/orientdb-role/tree/master.svg?style=shield)](https://circleci.com/gh/migibert/orientdb-role)
 
