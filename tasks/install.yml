@@ -19,12 +19,17 @@
   unarchive:
     copy: no
     src: "/tmp/orientdb-{{orientdb_version}}.tar.gz"
-    dest: "{{orientdb_dir}}"
+    dest: /tmp
   when: >
     orientdb_force_install == True or
     stat_orientdb_dir.stat.exists == False or
     stat_orientdb_bin_path.stat.exists == False or
     stat_orientdb_config_path.stat.exists == False
+
+- name: Move OrientDB files into the correct location
+  vars:
+    tmp_dir: /tmp/orientdb-community-{{orientdb_version}}
+  command: mv {{tmp_dir}} {{orientdb_path}} creates={{orientdb_path}} removes={{tmp_dir}}
 
 - name: Make orientdb_user owns directory #Issue 234 with unarchive owner attribute
   file:
