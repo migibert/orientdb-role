@@ -3,8 +3,8 @@ general:
 
 dependencies:
   post:
-    - pip install --upgrade pip
-    - pip install --upgrade setuptools
+    - sudo pip install --upgrade pip
+    - sudo pip install --upgrade setuptools
     - sudo pip install ansible
 
 machine:
