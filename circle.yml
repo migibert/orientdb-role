@@ -7,7 +7,7 @@ dependencies:
 
 machine:
   python:
-    version: 3.4.3
+    version: 2.7
   environment:
     PLAYBOOK: example.yml
 
