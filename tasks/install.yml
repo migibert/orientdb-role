@@ -27,9 +27,7 @@
     stat_orientdb_config_path.stat.exists == False
 
 - name: Move OrientDB files into the correct location
-  vars:
-    tmp_dir: /tmp/orientdb-community-{{orientdb_version}}
-  command: mv {{tmp_dir}} {{orientdb_path}} creates={{orientdb_path}} removes={{tmp_dir}}
+  command: mv {{orientdb_tmp_dir}} {{orientdb_path}} creates={{orientdb_path}} removes={{orientdb_tmp_dir}}
 
 - name: Make orientdb_user owns directory #Issue 234 with unarchive owner attribute
   file:
