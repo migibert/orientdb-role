@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'berkshelf'
+gem 'berkshelf', '>= 4.0.1'
 gem 'test-kitchen'
 gem 'kitchen-ansible'
 gem 'kitchen-vagrant'
