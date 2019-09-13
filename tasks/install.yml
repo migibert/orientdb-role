@@ -4,7 +4,7 @@
     dest: "/tmp/orientdb-{{orientdb_version}}.tar.gz"
 
 - stat:
-    path: "{{orientdb_dir}}"
+    path: "{{orientdb_path}}"
   register: stat_orientdb_dir
 
 - stat:
