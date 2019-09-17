@@ -1,10 +1,10 @@
 - name: Download OrientDB tarball
   get_url:
-    url: "http://www.orientechnologies.com/download.php?email=unknown@unknown.com&file=orientdb-community-{{orientdb_version}}.tar.gz&os=linux"
+    url: "{{orientdb_url}}"
     dest: "/tmp/orientdb-{{orientdb_version}}.tar.gz"
 
 - stat:
-    path: "{{orientdb_dir}}"
+    path: "{{orientdb_path}}"
   register: stat_orientdb_dir
 
 - stat:
