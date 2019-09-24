@@ -4,11 +4,11 @@
     orientdb_autoback_delay: 4h
     orientdb_autoback: False
     orientdb_autoback_start: 23:00:00
-    orientdb_version: 2.0.1
+    orientdb_version: 3.0.23
     orientdb_user: orientdb
     orientdb_user_password: $6$Ls2PCtO6PLby08$Hkh36Sn2V112FSexIHM25dHpnU2P1TflCQbj./e6kf3Pd.25s41uZu9dkeZSU7Ixy4fq.U8PSd6/FzjmSz3An/
     orientdb_dir: /opt
-    orientdb_path: '{{orientdb_dir}}/orientdb-community-{{orientdb_version}}'
+    orientdb_path: '{{orientdb_dir}}/orientdb-{{orientdb_version}}'
     orientdb_log_d  : /var/log/orientdb
     orientdb_bind_ip: 0.0.0.0
     orientdb_enable_binary: True

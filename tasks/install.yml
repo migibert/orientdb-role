@@ -56,5 +56,5 @@
 
 - name: Configure hazelcast
   template:
-    src=hazelcast.xml.j2
-    dest={{orientdb_path}}/config/hazelcast.xml
+    src: hazelcast.xml.j2
+    dest: "{{orientdb_path}}/config/hazelcast.xml"
