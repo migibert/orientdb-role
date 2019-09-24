@@ -1,0 +1,30 @@
+version: 2
+
+jobs:
+  build:
+    environment:
+      TEST_DIR: orientdb-role/tests
+
+    machine:
+      image: ubuntu-1604:201903-01
+
+    steps:
+      - checkout
+      - run: cp -r tests ~/tests
+      - run: mkdir -p ~/tests/roles
+      - run: sudo ln -s $(pwd) ~/tests/roles/migibert.orientdb
+      - run: sudo pip install ansible
+      - run:
+          command: ansible-playbook --syntax-check -i inventory example.yml
+          working_directory: ~/tests
+      - run:
+          command: ansible-playbook --list-tasks -i inventory example.yml
+          working_directory: ~/tests
+      - run:
+          command: sudo ansible-playbook --connection=local -i inventory example.yml
+          working_directory: ~/tests
+      - run:
+          command: "sudo ansible-playbook --connection=local -i inventory example.yml | grep -q 'changed=0.*failed=0'"
+          working_directory: ~/tests
+      - run: "sudo netstat -ntlp | grep 2480"
+      - run: "sudo netstat -ntlp | grep 2424"
