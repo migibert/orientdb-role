@@ -1,0 +1,14 @@
+---
+- name: bind OrientDB IP addresses and ports
+  xml:
+    - path: {{ orientdb_path }}/orientdb-server-config.xml
+      xpath: {{ item.xpath }}
+      attribute: {{ item.attr }}
+      value: {{ item.value }}
+    - loop:
+      - { xpath: "/orient-server/network/listeners/listener/@protocol='binary'", attr: "ip-address", val: "{{ orientdb_bind_ip }}" }
+      - { xpath: "/orient-server/network/listeners/listener/@protocol='binary'", attr: "port-range", val: "{{ orientdb_binary_port_range }}" }
+      - { xpath: "/orient-server/network/listeners/listener/@protocol='http'", attr: "ip-address", val: "{{ orientdb_bind_ip }}" }
+      - { xpath: "/orient-server/network/listeners/listener/@protocol='http'", attr: "port-range", val: "{{ orientdb_http_port_range }}" }
+
+# vim:set ts=2 sw=2 et nu ai si cursorcolumn:

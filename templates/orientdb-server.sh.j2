@@ -1,14 +1,18 @@
 #!/bin/sh
 # OrientDB service script
 #
-# Copyright (c) Orient Technologies LTD (http://www.orientechnologies.com)
+# Copyright (c) OrientDB LTD (http://http://orientdb.com/)
+
+# chkconfig: 2345 20 80
+# description: OrientDb init script
+# processname: orientdb.sh
 
 # You have to SET the OrientDB installation directory here
 ORIENTDB_DIR="{{orientdb_path}}"
 ORIENTDB_USER="{{orientdb_user}}"
 
 usage() {
-	echo "Usage: `basename $0`: <start|stop|status>"
+	echo "Usage: `basename $0`: <start|stop|logs|status>"
 	exit 1
 }
 
@@ -36,8 +40,13 @@ stop() {
 	su $ORIENTDB_USER -c "cd \"$ORIENTDB_DIR/bin\"; /usr/bin/nohup ./shutdown.sh 1>>{{orientdb_log_dir}}/orientdb.log 2>>{{orientdb_log_dir}}/orientdb.err &"
 }
 
+logs() {
+	echo "Tailing OrientDB server logs, press Ctrl+C to stop."
+	tail -qF -n0 $LOG_DIR/orientdb.err $LOG_DIR/orientdb.log
+}
+
 status() {
-	PID=`ps -ef | grep 'orientdb.www.path' | grep java | grep -v grep | awk '{print $2}'`
+	PID=` ps auxw | grep 'orientdb.www.path' | grep java | grep -v grep | awk '{print $2}'`
 	if [ "x$PID" = "x" ]
 	then
 		PID=0
@@ -59,16 +68,23 @@ then
 	exit 0
 fi
 
+if [ "x$1" = "xlogs" ]
+then
+	logs
+	exit 0
+fi
+
 if [ "x$1" = "xstatus" ]
 then
 	status
 	if [ $PID -gt 0 ]
 	then
 		echo "OrientDB server daemon is running with PID: $PID"
+		exit 0
 	else
 		echo "OrientDB server daemon is NOT running"
+		exit 3
 	fi
-	exit $PID
 fi
 
 usage
