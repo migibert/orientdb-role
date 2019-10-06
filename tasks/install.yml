@@ -40,9 +40,10 @@
     dest: "{{orientdb_path}}/bin/orientdb.sh"
 
 - name: Configure orientdb server
-  template:
-    src: orientdb-server-config.xml.j2
-    dest: "{{orientdb_path}}/config/orientdb-server-config.xml"
+  include: config-server.yml
+#  template:
+#    src: orientdb-server-config.xml.j2
+#    dest: "{{orientdb_path}}/config/orientdb-server-config.xml"
 
 - name: Configure orientdb logger
   template:
