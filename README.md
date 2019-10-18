@@ -33,6 +33,7 @@ orientdb_dir: Installation directory. Default is /opt
 orientdb_path: Installation path, used by server scripts for $ORIENTDB_HOME definition. Default value is '{{orientdb_dir}}/orientdb-{{orientdb_version}}'
 orientdb_log_dir: Log directory for orientdb server.
 orientdb_bind_ip: Server ip to bind. Default value is 0.0.0.0
+orientdb_enable_graph: Enables graph server. Default value is false.
 orientdb_enable_binary: Enables binary communication with server. Default value is True
 orientdb_binary_port_range: Port range associated to binary communication. Default value is 2424-2430
 orientdb_enable_ssl: Enables ssl communication with server. Default value is False

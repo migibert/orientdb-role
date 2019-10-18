@@ -20,141 +20,134 @@
    -->
 
 <orient-server>
-  <handlers>
-    <handler class="com.orientechnologies.orient.graph.handler.OGraphServerHandler">
-      <parameters>
-        <parameter name="enabled" value="true"/>
-        <parameter name="graph.pool.max" value="50"/>
-      </parameters>
-    </handler>
-    <!-- CLUSTER PLUGIN, TO TURN ON SET THE 'ENABLED' PARAMETER TO 'true' -->
-    <handler class="com.orientechnologies.orient.server.hazelcast.OHazelcastPlugin">
-      <parameters>
-        <!-- <parameter name="nodeName" value="europe1" /> -->
-        <parameter name="enabled" value="{% if orientdb_enable_distributed %}true{% else %}false{% endif %}"/>
-        <parameter name="configuration.db.default" value="${ORIENTDB_HOME}/config/default-distributed-db-config.json"/>
-        <parameter name="configuration.hazelcast" value="${ORIENTDB_HOME}/config/hazelcast.xml"/>
-      </parameters>
-    </handler>
-    <!-- JMX SERVER, TO TURN ON SET THE 'ENABLED' PARAMETER TO 'true' -->
-    <handler class="com.orientechnologies.orient.server.handler.OJMXPlugin">
-      <parameters>
-        <parameter name="enabled" value="false"/>
-        <parameter name="profilerManaged" value="true"/>
-      </parameters>
-    </handler>
-    <!-- AUTOMATIC BACKUP, TO TURN ON SET THE 'ENABLED' PARAMETER TO 'true' -->
-    <handler class="com.orientechnologies.orient.server.handler.OAutomaticBackup">
-      <parameters>
-        <parameter name="enabled" value="{% if orientdb_autoback %}true{% else %}false{% endif %}"/>
-        <parameter name="delay" value="{{ orientdb_autoback_delay|default('4h') }}"/>
-        <parameter name="firstTime" value="{{ orientdb_autoback_start|default('23:00:00') }}"/>
-        <parameter name="target.directory" value="backup"/>
-        <parameter name="target.fileName" value="${DBNAME}-${DATE:yyyyMMddHHmmss}.zip"/>
-        <parameter name="compressionLevel" value="9"/>
-        <parameter name="bufferSize" value="1048576"/>
-        <!--${DBNAME} AND ${DATE:} VARIABLES ARE SUPPORTED -->
-        <parameter name="db.include" value=""/>
-        <!-- DEFAULT: NO ONE, THAT MEANS ALL DATABASES. USE COMMA TO SEPARATE MULTIPLE DATABASE NAMES -->
-        <parameter name="db.exclude" value=""/>
-        <!-- USE COMMA TO SEPARATE MULTIPLE DATABASE NAMES -->
-      </parameters>
-    </handler>
-    <!-- SERVER SIDE SCRIPT INTERPRETER. WARNING! THIS CAN BE A SECURITY HOLE:
-         ENABLE IT ONLY IF CLIENTS ARE TRUCT, TO TURN ON SET THE 'ENABLED' PARAMETER
-         TO 'true' -->
-    <handler class="com.orientechnologies.orient.server.handler.OServerSideScriptInterpreter">
-      <parameters>
-        <parameter name="enabled" value="true"/>
-        <parameter name="allowedLanguages" value="SQL"/>
-      </parameters>
-    </handler>
-    <!-- USE SESSION TOKEN, TO TURN ON SET THE 'ENABLED' PARAMETER TO 'true' -->
-    <handler class="com.orientechnologies.orient.server.token.OrientTokenHandler">
-      <parameters>
-        <parameter name="enabled" value="false"/>
-        <!-- PRIVATE KEY -->
-        <parameter name="oAuth2Key" value=""/>
-        <!-- SESSION LENGTH IN MINUTES, DEFAULT=1 HOUR -->
-        <parameter name="sessionLength" value="60"/>
-        <!-- ENCRYPTION ALGORITHM, DEFAULT=HmacSHA256 -->
-        <parameter name="encryptionAlgorithm" value="HmacSHA256"/>
-      </parameters>
-    </handler>
-  </handlers>
-  <network>
-    <sockets>
-      <socket implementation="com.orientechnologies.orient.server.network.OServerSSLSocketFactory" name="ssl">
-        <parameters>
-          <parameter value="false" name="network.ssl.clientAuth"/>
-          <parameter value="config/cert/orientdb.ks" name="network.ssl.keyStore"/>
-          <parameter value="password" name="network.ssl.keyStorePassword"/>
-          <parameter value="config/cert/orientdb.ks" name="network.ssl.trustStore"/>
-          <parameter value="password" name="network.ssl.trustStorePassword"/>
-        </parameters>
-      </socket>
-      <socket implementation="com.orientechnologies.orient.server.network.OServerSSLSocketFactory" name="https">
-        <parameters>
-          <parameter value="false" name="network.ssl.clientAuth"/>
-          <parameter value="config/cert/orientdb.ks" name="network.ssl.keyStore"/>
-          <parameter value="password" name="network.ssl.keyStorePassword"/>
-          <parameter value="config/cert/orientdb.ks" name="network.ssl.trustStore"/>
-          <parameter value="password" name="network.ssl.trustStorePassword"/>
-        </parameters>
-      </socket>
-    </sockets>
-    <protocols>
-        <!-- Default registered protocol. It reads commands using the HTTP protocol and write data locally -->
-        <protocol name="binary" implementation="com.orientechnologies.orient.server.network.protocol.binary.ONetworkProtocolBinary"/>
-        <protocol name="http" implementation="com.orientechnologies.orient.server.network.protocol.http.ONetworkProtocolHttpDb"/>
-    </protocols>
-    <listeners>
-      {% if orientdb_enable_binary -%}
-      <listener protocol="binary" ip-address="{{orientdb_bind_ip}}" port-range="{{orientdb_binary_port_range}}" socket="default"/>
-      {% endif -%}
-      {%if orientdb_enable_ssl%}
-      <listener protocol="binary" ip-address="{{orientdb_bind_ip}}" port-range="{{orientdb_ssl_port_range}}" socket="ssl"/>
-      {% endif -%}
-      {%if orientdb_enable_http -%}
-      <listener protocol="http" ip-address="{{orientdb_bind_ip}}" port-range="{{orientdb_http_port_range}}" socket="default">
-        <parameters>
-          <!-- Connection's custom parameters. If not specified the global configuration will be taken -->
-          <parameter name="network.http.charset" value="utf-8"/>
-          <!-- Define additional HTTP headers to always send as response -->
-          <!-- Allow cross-site scripting -->
-          <!-- parameter name="network.http.additionalResponseHeaders" value="Access-Control-Allow-Origin: *;Access-Control-Allow-Credentials: true" / -->
-        </parameters>
-        <commands>
-          <command
-            pattern="GET|www GET|studio/ GET| GET|*.htm GET|*.html GET|*.xml GET|*.jpeg GET|*.jpg GET|*.png GET|*.gif GET|*.js GET|*.css GET|*.swf GET|*.ico GET|*.txt GET|*.otf GET|*.pjs GET|*.svg GET|*.json GET|*.woff GET|*.ttf GET|*.svgz"
-            implementation="com.orientechnologies.orient.server.network.protocol.http.command.get.OServerCommandGetStaticContent">
+    <handlers>
+        <handler class="com.orientechnologies.orient.graph.handler.OGraphServerHandler">
             <parameters>
-              <!-- Don't cache html resources in development mode -->
-              <entry name="http.cache:*.htm *.html"
-                     value="Cache-Control: no-cache, no-store, max-age=0, must-revalidate\r\nPragma: no-cache"/>
-              <!-- Default caching -->
-              <entry name="http.cache:default" value="Cache-Control: max-age=120"/>
+                <parameter name="enabled" value="{% if orientdb_enable_graph %}true{% else %}false{% endif %}"/>
+                <parameter name="graph.pool.max" value="50"/>
             </parameters>
-          </command>
-          <command pattern="GET|gephi/*" implementation="com.orientechnologies.orient.graph.server.command.OServerCommandGetGephi"/>
-        </commands>
-      </listener>
-      {% endif -%}
-    </listeners>
-    <cluster>
-    </cluster>
-  </network>
-  <storages>
-  </storages>
-  <users>
-    {% for user in orientdb_users -%}
-    <user resources="{{ user.resources | default("*") }}" password="{{user.password}}" name="{{user.name}}"/>
-    {% endfor -%}
-  </users>
+        </handler>
+        <!-- CLUSTER PLUGIN, TO TURN ON SET THE 'ENABLED' PARAMETER TO 'true' -->
+        <handler class="com.orientechnologies.orient.server.hazelcast.OHazelcastPlugin">
+            <parameters>
+                <!-- <parameter name="nodeName" value="europe1" /> -->
+                <parameter name="enabled" value="{% if orientdb_enable_distributed %}true{% else %}false{% endif %}"/>
+                <parameter name="configuration.db.default"
+                           value="${ORIENTDB_HOME}/config/default-distributed-db-config.json"/>
+                <parameter name="configuration.hazelcast" value="${ORIENTDB_HOME}/config/hazelcast.xml"/>
+            </parameters>
+        </handler>
+        <!-- JMX SERVER, TO TURN ON SET THE 'ENABLED' PARAMETER TO 'true' -->
+        <handler class="com.orientechnologies.orient.server.handler.OJMXPlugin">
+            <parameters>
+                <parameter name="enabled" value="false"/>
+                <parameter name="profilerManaged" value="true"/>
+            </parameters>
+        </handler>
+        <!-- AUTOMATIC BACKUP, TO TURN ON SET THE 'ENABLED' PARAMETER TO 'true' -->
+        <handler class="com.orientechnologies.orient.server.handler.OAutomaticBackup">
+            <parameters>
+                <parameter name="enabled" value="false"/>
+                <!-- LOCATION OF JSON CONFIGURATION FILE -->
+                <parameter name="config" value="${ORIENTDB_HOME}/config/automatic-backup.json"/>
+            </parameters>
+        </handler>
+        <!-- SERVER SIDE SCRIPT INTERPRETER. WARNING, THIS CAN BE A SECURITY HOLE BECAUSE MALICIOUS CODE COULD BE INJECTED.
+            ENABLE IT ONLY IF CLIENTS ARE TRUSTED, TO TURN ON SET THE 'ENABLED' PARAMETER TO 'true' -->
+        <handler
+                class="com.orientechnologies.orient.server.handler.OServerSideScriptInterpreter">
+            <parameters>
+                <parameter name="enabled" value="true"/>
+                <parameter name="allowedLanguages" value="SQL"/>
+            </parameters>
+        </handler>
+        <!-- CUSTOM SQL FUNCTIONS -->
+        <handler class="com.orientechnologies.orient.server.handler.OCustomSQLFunctionPlugin">
+            <parameters>
+                <!-- LOCATION OF JSON CONFIGURATION FILE -->
+                <parameter name="config" value="${ORIENTDB_HOME}/config/custom-sql-functions.json"/>
+            </parameters>
+        </handler>
 
-  <properties>
-    {% for orientdb_tuning_property in orientdb_tuning_properties -%}
-    <entry name="{{orientdb_tuning_property.name}}" value="{{orientdb_tuning_property.value}}" />
-    {% endfor -%}
-  </properties>
+    </handlers>
+    <network>
+        <sockets>
+            <socket implementation="com.orientechnologies.orient.server.network.OServerTLSSocketFactory" name="ssl">
+                <parameters>
+                    <parameter value="false" name="network.ssl.clientAuth"/>
+                    <parameter value="config/cert/orientdb.ks" name="network.ssl.keyStore"/>
+                    <parameter value="password" name="network.ssl.keyStorePassword"/>
+                    <parameter value="config/cert/orientdb.ks" name="network.ssl.trustStore"/>
+                    <parameter value="password" name="network.ssl.trustStorePassword"/>
+                </parameters>
+            </socket>
+            <socket implementation="com.orientechnologies.orient.server.network.OServerTLSSocketFactory" name="https">
+                <parameters>
+                    <parameter value="false" name="network.ssl.clientAuth"/>
+                    <parameter value="config/cert/orientdb.ks" name="network.ssl.keyStore"/>
+                    <parameter value="password" name="network.ssl.keyStorePassword"/>
+                    <parameter value="config/cert/orientdb.ks" name="network.ssl.trustStore"/>
+                    <parameter value="password" name="network.ssl.trustStorePassword"/>
+                </parameters>
+            </socket>
+        </sockets>
+        <protocols>
+            <!-- Default registered protocol. It reads commands using the HTTP protocol
+                and write data locally -->
+            <protocol name="binary"
+                      implementation="com.orientechnologies.orient.server.network.protocol.binary.ONetworkProtocolBinary"/>
+            <protocol name="http"
+                      implementation="com.orientechnologies.orient.server.network.protocol.http.ONetworkProtocolHttpDb"/>
+        </protocols>
+        <listeners>
+            {% if orientdb_enable_binary -%}
+            <listener protocol="binary" ip-address="{{orientdb_bind_ip}}" port-range="{{orientdb_binary_port_range}}" socket="default"/>
+            {% endif -%}
+            {%if orientdb_enable_ssl%}
+            <listener protocol="binary" ip-address="{{orientdb_bind_ip}}" port-range="{{orientdb_ssl_port_range}}" socket="ssl"/>
+            {% endif -%}
+            {%if orientdb_enable_http -%}
+            <listener protocol="http" ip-address="{{orientdb_bind_ip}}" port-range="{{orientdb_http_port_range}}" socket="default">
+                <parameters>
+                    <!-- Connection's custom parameters. If not specified the global configuration
+                        will be taken -->
+                    <parameter name="network.http.charset" value="utf-8"/>
+                    <parameter value="true" name="network.http.jsonResponseError"/>
+                    <!-- Define additional HTTP headers to always send as response -->
+                    <!-- Allow cross-site scripting -->
+                    <!-- parameter name="network.http.additionalResponseHeaders" value="Access-Control-Allow-Origin:
+                        *;Access-Control-Allow-Credentials: true" / -->
+                </parameters>
+                <commands>
+                    <command
+                            pattern="GET|www GET|studio/ GET| GET|*.htm GET|*.html GET|*.xml GET|*.jpeg GET|*.jpg GET|*.png GET|*.gif GET|*.js GET|*.css GET|*.swf GET|*.ico GET|*.txt GET|*.otf GET|*.pjs GET|*.svg GET|*.json GET|*.woff GET|*.woff2 GET|*.ttf GET|*.svgz"
+                            implementation="com.orientechnologies.orient.server.network.protocol.http.command.get.OServerCommandGetStaticContent">
+                        <parameters>
+                            <!-- Don't cache html resources in development mode -->
+                            <entry name="http.cache:*.htm *.html"
+                                   value="Cache-Control: no-cache, no-store, max-age=0, must-revalidate\r\nPragma: no-cache"/>
+                            <!-- Default caching -->
+                            <entry name="http.cache:default" value="Cache-Control: max-age=120"/>
+                        </parameters>
+                    </command>
+                    <command pattern="GET|gephi/*" implementation="com.orientechnologies.orient.server.network.protocol.http.command.get.OServerCommandGetGephi"/>
+                </commands>
+            </listener>
+            {% endif -%}
+        </listeners>
+        <cluster>
+        </cluster>
+    </network>
+    <storages>
+    </storages>
+    <users>
+      {% for user in orientdb_users -%}
+      <user resources="{{ user.resources | default("*") }}" password="{{user.password}}" name="{{user.name}}"/>
+      {% endfor -%}
+    </users>
+    <properties>
+        {% for orientdb_tuning_property in orientdb_tuning_properties -%}
+        <entry name="{{orientdb_tuning_property.name}}" value="{{orientdb_tuning_property.value}}" />
+        {% endfor -%}
+    </properties>
 </orient-server>
