@@ -25,11 +25,12 @@ Take a look at default variables to have an idea of a complete configuration.
 orientdb_autoback_delay: Delay time for auto backups. Default is 4h.
 orientdb_autoback: Enables auto backup. Default is False.
 orientdb_autoback_start: Start time for auto backup. Default is 23:00:00.
-orientdb_version: OrientDB server version. Default value is 2.0.1.
+orientdb_version: OrientDB server version. Default value is 2.2.36.
+orientdb_url: URL used to retrieve OrientDB archive. Default value is "https://s3.us-east-2.amazonaws.com/orientdb3/releases/{{orientdb_version}}/orientdb-community-{{orientdb_version}}.tar.gz"
 orientdb_user: System user, OrientDB directories owner. Default value is orientdb.
 orientdb_user_password: Hashed value of orientdb_user password. Default value is hashed 'orientdb' : $6$Ls2PCtO6PLby08$Hkh36Sn2V112FSexIHM25dHpnU2P1TflCQbj./e6kf3Pd.25s41uZu9dkeZSU7Ixy4fq.U8PSd6/FzjmSz3An/
 orientdb_dir: Installation directory. Default is /opt
-orientdb_path: Installation path, used by server scripts for $ORIENTDB_HOME definition. Default value is '{{orientdb_dir}}/orientdb-community-{{orientdb_version}}'
+orientdb_path: Installation path, used by server scripts for $ORIENTDB_HOME definition. Default value is '{{orientdb_dir}}/orientdb-{{orientdb_version}}'
 orientdb_log_dir: Log directory for orientdb server.
 orientdb_bind_ip: Server ip to bind. Default value is 0.0.0.0
 orientdb_enable_binary: Enables binary communication with server. Default value is True
