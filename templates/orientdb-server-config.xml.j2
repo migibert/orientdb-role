@@ -47,9 +47,8 @@
         <!-- AUTOMATIC BACKUP, TO TURN ON SET THE 'ENABLED' PARAMETER TO 'true' -->
         <handler class="com.orientechnologies.orient.server.handler.OAutomaticBackup">
             <parameters>
-                <parameter name="enabled" value="false"/>
-                <!-- LOCATION OF JSON CONFIGURATION FILE -->
-                <parameter name="config" value="${ORIENTDB_HOME}/config/automatic-backup.json"/>
+              <parameter name="enabled" value="{% if orientdb_autoback %}true{% else %}false{% endif %}"/>
+              <parameter name="config" value="${ORIENTDB_HOME}/config/automatic-backup.json"/>
             </parameters>
         </handler>
         <!-- SERVER SIDE SCRIPT INTERPRETER. WARNING, THIS CAN BE A SECURITY HOLE BECAUSE MALICIOUS CODE COULD BE INJECTED.

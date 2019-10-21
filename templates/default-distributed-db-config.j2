@@ -1,11 +1,10 @@
 {
   "autoDeploy": {{orientdb_distributed_db_config.autoDeploy | to_json }},
-  "hotAlignment": {{orientdb_distributed_db_config.hotAlignment | to_json }},
   "executionMode": "{{orientdb_distributed_db_config.executionMode}}",
   "readQuorum": {{orientdb_distributed_db_config.readQuorum}},
   "writeQuorum": {{orientdb_distributed_db_config.writeQuorum}},
-  "failureAvailableNodesLessQuorum": {{orientdb_distributed_db_config.failureAvailableNodesLessQuorum | to_json}},
   "readYourWrites": {{orientdb_distributed_db_config.readYourWrites | to_json}},
+  "newNodeStrategy": {{orientdb_distributed_db_config.newNodeStrategy | to_json}}
   "dataCenters" : {{ orientdb_distributed_db_config.dataCenters | to_json }}
   "servers": {{orientdb_distributed_db_config.servers | to_json}},
   "clusters": {{orientdb_distributed_db_config.clusters | to_json}}

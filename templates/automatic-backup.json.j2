@@ -1,0 +1,13 @@
+{
+  "enabled": {% if orientdb_autoback %}true{% else %}false{% endif %},
+  "mode": "FULL_BACKUP",
+  "exportOptions": "",
+  "delay": "{{ orientdb_autoback_delay|default('4h') }}",
+  "firstTime": "{{ orientdb_autoback_start | default('23:00:00') }}",
+  "targetDirectory": "backup",
+  "targetFileName": "${DBNAME}-${DATE:yyyyMMddHHmmss}.zip",
+  "compressionLevel": 9,
+  "bufferSize": 1048576,
+  "dbInclude": {{ orientdb_autoback_db_include | to_json }},
+  "dbExclude": {{ orientdb_autoback_db_exclude | to_json }}
+}

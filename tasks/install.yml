@@ -30,7 +30,7 @@
   file:
     path: "{{orientdb_path}}"
     owner: "{{orientdb_user}}"
-    group: "{{orientdb_user}}"
+    group: "{{orientdb_group}}"
     state: directory
     recurse: yes
 
@@ -58,3 +58,8 @@
   template:
     src: hazelcast.xml.j2
     dest: "{{orientdb_path}}/config/hazelcast.xml"
+
+- name: Configure automatic backup
+  template:
+    src: automatic-backup.json.j2
+    dest: "{{orientdb_path}}/config/automatic-backup.json"
