@@ -39,12 +39,24 @@ orientdb_distributed:
 
 orientdb_distributed_db_config:
   autoDeploy: true
-  hotAlignment: false
   executionMode: "undefined"
   readQuorum: 1
   writeQuorum: 2
-  failureAvailableNodesLessQuorum: false
   readYourWrites: true
+  newNodeStrategy: "static"
+  dataCenters:
+    rome:
+      writeQuorum: "majority"
+      servers:
+        - "europe-0"
+        - "europe-1"
+        - "europe-2"
+    denver:
+      writeQuorum: "majority"
+      servers:
+        - "usa-0"
+        - "usa-1"
+        - "usa-2"
   servers:
     "*": "master"
   clusters:
@@ -322,3 +334,179 @@ orientdb_tuning_properties:
   value: 0
 - name: profiler.maxValues
   value: 200
+- name: sequence.maxRetry
+  value: 100
+- name: sequence.retryDelay
+  value: 200
+- name: storageProfiler.intervalBetweenSnapshots
+  value: 100
+- name: storageProfiler.cleanUpInterval
+  value: 5000
+- name: log.console.level
+  value: info
+- name: log.file.level
+  value: info
+- name: log.console.ansi
+  value: auto
+- name: class.minimumClusters
+  value: 0
+- name: cache.local.impl
+  value: com.orientechnologies.orient.core.cache.ORecordCacheWeakRefs
+- name: cache.local.enabled
+  value: true
+- name: command.timeout
+  value: 0
+- name: command.cache.enabled
+  value: false
+- name: command.cache.evictStrategy
+  value: PER_CLUSTER
+- name: command.cache.minExecutionTime
+  value: 10
+- name: command.cache.maxResultsetSize
+  value: 500
+- name: query.parallelAuto
+  value: false
+- name: query.parallelMinimumRecords
+  value: 300000
+- name: query.parallelResultQueueSize
+  value: 20000
+- name: query.scanPrefetchPages
+  value: 20
+- name: query.scanBatchSize
+  value: 1000
+- name: query.scanThresholdTip
+  value: 50000
+- name: query.limitThresholdTip
+  value: 10000
+- name: query.live.support
+  value: true
+- name: statement.cacheSize
+  value: 100
+- name: sql.graphConsistencyMode
+  value: tx
+- name: client.channel.maxPool
+  value: 100
+- name: client.connectionPool.waitTimeout
+  value: 5000
+- name: client.channel.dbReleaseWaitTimeout
+  value: 10000
+- name: client.ssl.enabled
+  value: false
+- name: client.ssl.keyStore
+  value: null
+- name: client.ssl.keyStorePass
+  value: null
+- name: client.ssl.trustStore
+  value: null
+- name: client.ssl.trustStorePass
+  value: null
+- name: client.krb5.config
+  value: null
+- name: client.krb5.ccname
+  value: null
+- name: client.krb5.ktname
+  value: null
+- name: client.credentialinterceptor
+  value: null
+- name: client.session.tokenBased
+  value: true
+- name: client.channel.minPool
+  value: 1
+- name: server.openAllDatabasesAtStartup
+  value: false
+- name: server.channel.cleanDelay
+  value: 5000
+- name: server.cache.staticFile
+  value: false
+- name: server.log.dumpClientExceptionLevel
+  value: FINE
+- name: server.log.dumpClientExceptionFullStackTrace
+  value: false
+- name: server.security.file
+  value: false
+- name: distributed.crudTaskTimeout
+  value: 3000
+- name: distributed.commandTaskTimeout
+  value: 120000
+- name: distributed.commandQuickTaskTimeout
+  value: 5000
+- name: distributed.commandLongTaskTimeout
+  value: 86400000
+- name: distributed.deployDbTaskTimeout
+  value: 1200000
+- name: distributed.deployChunkTaskTimeout
+  value: 15000
+- name: distributed.deployDbTaskCompression
+  value: 7
+- name: distributed.asynchQueueSize
+  value: 0
+- name: distributed.asynchResponsesTimeout
+  value: 15000
+- name: distributed.purgeResponsesTimerDelay
+  value: 15000
+- name: distributed.conflictResolverRepairerChain
+  value: majority,content,version
+- name: distributed.conflictResolverRepairerCheckEvery
+  value: 5000
+- name: distributed.conflictResolverRepairerBatch
+  value: 100
+- name: distributed.txAliveTimeout
+  value: 30000
+- name: distributed.requestChannels
+  value: 1
+- name: distributed.responseChannels
+  value: 1
+- name: distributed.heartbeatTimeout
+  value: 10000
+- name: distributed.checkHealthCanOfflineServer
+  value: false
+- name: distributed.checkHealthEvery
+  value: 10000
+- name: distributed.autoRemoveOfflineServers
+  value: -1
+- name: distributed.publishNodeStatusEvery
+  value: 5000
+- name: distributed.localQueueSize
+  value: 10000
+- name: distributed.dbWorkerThreads
+  value: 8
+- name: distributed.queueMaxSize
+  value: 10000
+- name: distributed.backupDirectory
+  value: ../backup/databases
+- name: distributed.concurrentTxMaxAutoRetry
+  value: 10
+- name: distributed.atomicLockTimeout
+  value: 300
+- name: distributed.concurrentTxAutoRetryDelay
+  value: 100
+- name: distributed.queueTimeout
+  value: 500000
+- name: jna.disable.system.library
+  value: true
+- name: oauth2.secretkey
+  value:
+- name: lazyset.workOnStream
+  value: true
+- name: mvrbtree.timeout
+  value: 0
+- name: mvrbtree.nodePageSize
+  value: 256
+- name: mvrbtree.loadFactor
+  value: 0.7
+- name: mvrbtree.optimizeThreshold
+  value: 100000
+- name: mvrbtree.entryPoints
+  value: 64
+- name: mvrbtree.optimizeEntryPointsFactor
+  value: 1.0
+- name: mvrbtree.entryKeysInMemory
+  value: false
+- name: mvrbtree.entryValuesInMemory
+  value: false
+- name: mvrbtree.ridBinaryThreshold
+  value: -1
+- name: mvrbtree.ridNodePageSize
+  value: 64
+- name: mvrbtree.ridNodeSaveMemory
+  value: false
