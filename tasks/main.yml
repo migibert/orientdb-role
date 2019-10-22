@@ -1,4 +1,9 @@
 ---
+- name: Prerequisites
+  fail:
+    msg: Versions 1.x of this role cannot handle OrientDB version > 2 installations.
+  when: orientdb_version[:1] | int > 2
+
 - name: Create orientdb user
   user: name={{orientdb_user}} password={{orientdb_user_password}}
 
