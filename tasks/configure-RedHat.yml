@@ -4,7 +4,7 @@
     dest: /etc/systemd/system/orientdb.service
     owner: root
     group: root
-    mode: 400
+    mode: 0400
   register: orientdb_service_unit
 
 - name: Start service
@@ -13,4 +13,4 @@
     state: restarted
     enabled: yes
     daemon_reload: yes
-  when: orientdb_service_unit is changed or orientdb_force_install == True
+  when: orientdb_service_unit is changed or orientdb_force_install

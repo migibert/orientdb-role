@@ -6,21 +6,21 @@
 
 - name: Create orientdb group
   group:
-    name: "{{orientdb_group}}"
+    name: "{{ orientdb_group }}"
     state: present
 
 - name: Create orientdb user
   user:
-    name: "{{orientdb_user}}"
-    password: "{{orientdb_user_password}}"
-    group: "{{orientdb_group}}"
+    name: "{{ orientdb_user }}"
+    password: "{{ orientdb_user_password }}"
+    group: "{{ orientdb_group }}"
 
 - name: Create log directory
   file:
-    path: "{{orientdb_log_dir}}"
+    path: "{{ orientdb_log_dir }}"
     state: directory
-    owner: "{{orientdb_user}}"
-    group: "{{orientdb_group}}"
+    owner: "{{ orientdb_user }}"
+    group: "{{ orientdb_group }}"
 
 - include: install.yml
 
