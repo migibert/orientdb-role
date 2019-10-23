@@ -13,7 +13,7 @@
     dest: /etc/systemd/system/orientdb.service
     owner: root
     group: root
-    mode: 400
+    mode: 0400
   register: orientdb_systemd_unit
   when: ansible_facts.service_mgr == 'systemd'
 
@@ -29,4 +29,7 @@
     name: orientdb
     state: restarted
     enabled: yes
-  when: (orientdb_sysvinit_unit is defined and orientdb_sysvinit_unit is changed) or (orientdb_systemd_unit and orientdb_systemd_unit is changed) or orientdb_force_install == True
+  when: >
+    (orientdb_sysvinit_unit is defined and orientdb_sysvinit_unit is changed) or
+    (orientdb_systemd_unit and orientdb_systemd_unit is changed) or
+    orientdb_force_install
