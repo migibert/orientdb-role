@@ -1,14 +1,16 @@
-[Unit]
-Description=OrientDB
-After=network.target
-Wants=network.target
+#
+# Copyright (c) OrientDB LTD (http://http://orientdb.com/)
+#
 
-[Service]
-User=orientdb
-Environment=ORIENTDB_ROOT_PASSWORD={{ orientdb_users[0].password }}
-ExecStart={{ orientdb_path }}/bin/server.sh
-Restart=on-failure
-RestartSec=20
+[Unit]
+Description=OrientDB Server
+After=network.target
+After=syslog.target
 
 [Install]
 WantedBy=multi-user.target
+
+[Service]
+User={{orientdb_user}}
+Group={{orientdb_group}}
+ExecStart={{orientdb_path}}/bin/server.sh

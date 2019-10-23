@@ -1,14 +1,26 @@
 ---
 - name: Prerequisites
   fail:
-    msg: Versions 1.x of this role cannot handle OrientDB version > 2 installations.
-  when: orientdb_version[:1] | int > 2
+    msg: Versions 1.x of this role cannot handle OrientDB version < 3 installations.
+  when: orientdb_version[:1] | int < 3
+
+- name: Create orientdb group
+  group:
+    name: "{{orientdb_group}}"
+    state: present
 
 - name: Create orientdb user
-  user: name={{orientdb_user}} password={{orientdb_user_password}}
+  user:
+    name: "{{orientdb_user}}"
+    password: "{{orientdb_user_password}}"
+    group: "{{orientdb_group}}"
 
 - name: Create log directory
-  file: path={{orientdb_log_dir}} state=directory owner={{orientdb_user}} group={{orientdb_user}}
+  file:
+    path: "{{orientdb_log_dir}}"
+    state: directory
+    owner: "{{orientdb_user}}"
+    group: "{{orientdb_group}}"
 
 - include: install.yml
 

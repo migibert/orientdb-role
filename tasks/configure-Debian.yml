@@ -1,8 +1,3 @@
-- stat:
-    path: /etc/init.d/orientdb
-  register: service_sysvinit_stat
-  when: "{{ ansible_distribution_version|int <= 14 }}"
-
 - name: Install orientdb as a sysvinit service
   copy:
     remote_src: True
@@ -10,7 +5,7 @@
     dest: /etc/init.d/orientdb
     mode: a+x
   register: orientdb_sysvinit_unit
-  when: "{{ ansible_distribution_version|int <= 14 }} and (service_sysvinit_stat.stat.exists == False or orientdb_force_install == True)"
+  when: ansible_facts.service_mgr == 'sysvinit'
 
 - name: Install orientdb as a systemd service
   template:
@@ -20,15 +15,18 @@
     group: root
     mode: 400
   register: orientdb_systemd_unit
-  when: "{{ ansible_distribution_version|int > 14 }} or orientdb_force_install == True"
+  when: ansible_facts.service_mgr == 'systemd'
 
-- name: systemctl daemon-reload
-  command: systemctl daemon-reload
-  when: "{{ ansible_distribution_version|int > 14 }} and orientdb_sysvinit_unit|changed"
+- name: Reload systemd daemon
+  systemd :
+    name: orientdb
+    enabled: yes
+    daemon_reload: yes
+  when: orientdb_service_unit is changed
 
 - name: Launch orientdb service
   service:
     name: orientdb
     state: restarted
     enabled: yes
-  when: (orientdb_sysvinit_unit is defined and orientdb_sysvinit_unit|changed) or (orientdb_systemd_unit and orientdb_systemd_unit|changed) or orientdb_force_install == True
+  when: (orientdb_sysvinit_unit is defined and orientdb_sysvinit_unit is changed) or (orientdb_systemd_unit and orientdb_systemd_unit is changed) or orientdb_force_install == True
