@@ -7,12 +7,12 @@
     orientdb_autoback_db_include: []
     orientdb_autoback_db_exclude: []
     orientdb_version: 3.0.23
-    orientdb_url: https://s3.us-east-2.amazonaws.com/orientdb3/releases/{{orientdb_version}}/orientdb-{{orientdb_version}}.tar.gz
+    orientdb_url: https://repo1.maven.org/maven2/com/orientechnologies/orientdb-community/{{orientdb_version}}/orientdb-community-{{orientdb_version}}.tar.gz
     orientdb_user: orientdb
     orientdb_group: orientdb
     orientdb_user_password: $6$Ls2PCtO6PLby08$Hkh36Sn2V112FSexIHM25dHpnU2P1TflCQbj./e6kf3Pd.25s41uZu9dkeZSU7Ixy4fq.U8PSd6/FzjmSz3An/
     orientdb_dir: /opt
-    orientdb_path: '{{orientdb_dir}}/orientdb-{{orientdb_version}}'
+    orientdb_path: '{{orientdb_dir}}/orientdb-community-{{orientdb_version}}'
     orientdb_log_dir: /var/log/orientdb
     orientdb_bind_ip: 0.0.0.0
     orientdb_enable_binary: True
